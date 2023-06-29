@@ -1,40 +1,40 @@
-### steps to setup gmail 
-
-Steps:
  step1: Login Into Gmail 
  Step2: Enable 2 step Verification (Manage Google Account --> Security --> Signing in to Google )
  Step3: Get App Password ( yourGMAIL@gmail.com  appPassword: generateIT)
  Step4: login into ubuntu and switch to root using: sudo su -
- Step5:  Run below commands:
+ Step5: Run below commands:
 	apt-get update -y
-        apt-get install sendmail mailutils -y
- Step6: Create authentication file
-        cd /etc/mail
-	mkdir -m 700 authinfo
-	cd authinfo/
-	vi gmail
-        add the below conntent 
+        apt-get install  ssmtp mailutils -y
+ Step6: Make sure IMAP is enabled in gmail setting
+ Step7: Edit /etc/ssmtp/ssmtp.conf file as below
 
-	AuthInfo: "U:root" "I:your-mail@gmail.com" "P:your-password"
+# Config file for sSMTP sendmail
+#
+# The person who gets all mail for userids < 1000
+# Make this empty to disable rewriting.
+#root=postmaster
+SERVER=<enter gmail ID>
 
-        Now edit your mail id and password
+# The place where the mail goes. The actual machine name is required no
+# MX records are consulted. Commonly mailhosts are named mail.domain.com
+mailhub=smtp.gmail.com:587
 
-Step7: create hash map of the file:
-	makemap hash gmail < gmail
-Step8: Got to /etc/mail and open sendmail.mc
-       then Add the following lines to sendmail.mc file right above MAILER_DEFINITIONS
-	#GMail settings:
-	define(`SMART_HOST',`[smtp.gmail.com]')dnl
-	define(`RELAY_MAILER_ARGS', `TCP $h 587')dnl
-	define(`ESMTP_MAILER_ARGS', `TCP $h 587')dnl
-	define(`confAUTH_OPTIONS', `A p')dnl
-	TRUST_AUTH_MECH(`EXTERNAL DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl
-	define(`confAUTH_MECHANISMS', `EXTERNAL GSSAPI DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl
-	FEATURE(`authinfo',`hash -o /etc/mail/authinfo/gmail.db')dnl
+AuthUser=<entergmailid>
+Authpass=<enter apppassword>
+UseTLS=YES
+UseSTARTTLS=YES
 
+# Where will the mail seem to come from?
+rewriteDomain=gmail.com
 
-Step9: Now run below two command from /etc/mail
-	make
-	/etc/init.d/sendmail reload
-Step10: Verify the test mail using
-	echo "Hello, I am from $(hostname)" | mail -s "Testing Gmail Setup on Ubuntu Server" toMailId@gmail.com
+# The full hostname
+hostname=<enter hostname>
+
+# Are users allowed to set their own From: address?
+# YES - Allow the user to specify their own From: address
+# NO - Use the system generated From: address
+FromLineOverride=YES
+
+ Step8: Test Mail
+        echo "Hello, I am from $(hostname)" | mail -s "Testing Gmail Setup on Ubuntu Server" <enter mail id to send>
+ 
