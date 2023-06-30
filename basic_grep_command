@@ -1,0 +1,84 @@
+root@ip-172-31-44-15:~# cat sample.txt
+We are practicing grep command
+checking the line content
+we need to check line word on each lines
+hence checking line word
+on every line there is some content
+checking Case sensitivity for LIne
+Thats end of file and this line
+=======================
+root@ip-172-31-44-15:~# cat second_file.txt
+second file to check line word recursively
+==========================
+root@ip-172-31-44-15:~# grep -i line sample.txt
+checking the line content
+we need to check line word on each lines
+hence checking line word
+on every line there is some content
+checking Case sensitivity for LIne
+Thats end of file and this line
+--------------------------
+root@ip-172-31-44-15:~# grep line sample.txt
+checking the line content
+we need to check line word on each lines
+hence checking line word
+on every line there is some content
+Thats end of file and this line
+---------------------------
+root@ip-172-31-44-15:~# grep -w line sample.txt
+checking the line content
+we need to check line word on each lines
+hence checking line word
+on every line there is some content
+Thats end of file and this line
+------------------------------
+root@ip-172-31-44-15:~# grep -wo line sample.txt
+line
+line
+line
+line
+line
+root@ip-172-31-44-15:~# grep -won line sample.txt
+2:line
+3:line
+4:line
+5:line
+7:line
+root@ip-172-31-44-15:~# grep -woc line sample.txt
+5
+-------------------------------------------------
+root@ip-172-31-44-15:~# grep -wv line sample.txt
+We are practicing grep command
+checking Case sensitivity for LIne
+---------------------------------------------------
+root@ip-172-31-44-15:~# grep -A 1 hence sample.txt
+hence checking line word
+on every line there is some content
+root@ip-172-31-44-15:~# grep -B 1 hence sample.txt
+we need to check line word on each lines
+hence checking line word
+root@ip-172-31-44-15:~# grep -C 1 hence sample.txt
+we need to check line word on each lines
+hence checking line word
+on every line there is some content
+--------------------------------
+root@ip-172-31-44-15:~# grep -wr line *
+sample.txt:checking the line content
+sample.txt:we need to check line word on each lines
+sample.txt:hence checking line word
+sample.txt:on every line there is some content
+sample.txt:Thats end of file and this line
+second_file.txt:second file to check line word recursively
+--------------------------------------------
+root@ip-172-31-44-15:~# grep -wrl line *
+sample.txt
+second_file.txt
+--------------------------------------------------------------
+root@ip-172-31-44-15:~# grep -wrh line *
+checking the line content
+we need to check line word on each lines
+hence checking line word
+on every line there is some content
+Thats end of file and this line
+second file to check line word recursively
+root@ip-172-31-44-15:~#
